@@ -1,7 +1,11 @@
-Korišćene biblioteke:
+Sistem za upravljanje bibliotekom, realizacija projekta na predmetu SI4PIA (Programiranje Internet Aplikacija), godina 2011/2012, Elektrotehnički fakultet u Beogradu.
 
+Sajt predmeta: http://rti.etf.bg.ac.rs/rti/ir4pia/
+Tehnologija: JavaServer Faces
+
+Korišćene biblioteke:
 PrimeFaces 3.3.1 - http://www.primefaces.org/
 MySQL Connector/J - http://dev.mysql.com/downloads/connector/j/
-Hibernate - http://hibernate.org/
+Hibernate 3.2.5 - http://hibernate.org/
 Commons IO 2.4 - http://commons.apache.org/io/
 Commons FileUpload 1.2.2  - http://commons.apache.org/fileupload/
