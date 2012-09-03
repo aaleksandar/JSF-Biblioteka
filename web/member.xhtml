@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/layoutTemplate.xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="title">
+        JSF Biblioteka | Korisnički panel
+    </ui:define>
+
+    <ui:define name="content">
+		<p:accordionPanel id="memberAccordPanel">
+			<p:tab title="Iznajmljene knjige">
+				<h:form>
+					<p:dataTable id="takenTable" var="taken" value="#{memberPanelBean.taken}" rowKey="#{taken.id}"
+								 widgetVar="booksTable" emptyMessage="Trenutno nemate iznajmljenih knjiga">
+
+						<p:column headerText="Naslov">
+							<h:outputText value="#{taken.book.title}" />
+						</p:column>
+
+						<p:column headerText="Autor">
+							<h:outputText value="#{taken.book.author}" />
+						</p:column>
+
+						<p:column headerText="Vreme iznajmljivanja">
+							<h:outputText value="#{taken.timestamp}" />
+						</p:column>
+
+						<p:column headerText="Kazna">
+							<h:outputText value="#{takenBean.penalty(taken)}" />
+						</p:column>
+
+						<p:column headerText="Vraćena">
+							<h:outputText value="Da" rendered="#{taken.back}" />
+							<h:outputText value="Ne" rendered="#{!taken.back}" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Rezervisane knjige">
+				<h:form id="reservationForm">
+					<p:dataTable id="reservationDataTable" var="res" value="#{memberPanelBean.reservations}" rowKey="#{res.id}"
+								 widgetVar="booksTable" emptyMessage="Trenutno nemate rezervisanih knjiga">
+
+						<p:column headerText="Naslov">
+							<h:outputText value="#{res.book.title}" />
+						</p:column>
+
+						<p:column headerText="Autor">
+							<h:outputText value="#{res.book.author}" />
+						</p:column>
+
+						<p:column headerText="Vreme rezervacije">
+							<h:outputText value="#{res.timestamp}" />
+						</p:column>
+
+						<p:column headerText="Otkaži?">
+							<p:commandButton update=":memberAccordPanel:reservationForm" actionListener="#{memberPanelBean.cancelReservation(res)}" icon="ui-icon-closethick" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+		</p:accordionPanel>
+    </ui:define>
+
+</ui:composition>

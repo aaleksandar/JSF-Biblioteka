@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="library_db"/>
+  <table-filter match-name="user"/>
+  <table-filter match-name="comment"/>
+  <table-filter match-name="book"/>
+  <table-filter match-name="reservation"/>
+  <table-filter match-name="taken"/>
+  <table-filter match-name="monthly_award"/>
+  <table-filter match-name="yearly_award"/>
+  <table-filter match-name="const"/>
+  <table-filter match-name="system_activated"/>
+</hibernate-reverse-engineering>

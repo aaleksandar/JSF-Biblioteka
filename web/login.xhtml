@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/layoutTemplate.xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns="http://www.w3.org/1999/xhtml">
+
+	<ui:define name="title">
+		JSF Biblioteka | Prijava
+	</ui:define>
+
+    <ui:define name="content">
+		
+		<p:accordionPanel id="center-div">
+			<p:tab title="Postojeći korisnici - prijava">
+				<h:form>
+					<p:panel id="loginPanel">
+						<p:messages id="msgsLogin"/>
+						<h:panelGrid columns="3" cellpadding="5">
+							
+							<h:outputText for="loginUsername" value="Korisničko ime: " />
+							<p:inputText id="loginUsername" value="#{sessionBean.username}" required="true" label="Korisničko ime" />
+							<p:message for="loginUsername" display="icon"/>
+							
+							<h:outputText for="loginPassword" value="Lozinka: " />
+							<p:password id="loginPassword" value="#{sessionBean.password}" required="true" label="Lozinka" />
+							<p:message for="loginPassword" display="icon"/>
+							
+							<p:commandButton id="btnLogin" binding="#{sessionBean.btnLogin}" value="Prijavi se" update="loginPanel" action="#{sessionBean.login}" />
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:tab>
+
+			<p:tab title="Postojeći korisnici - promena lozinke">
+				<h:form>
+					<p:panel id="changePassPanel">
+						<p:messages id="msgsChangePass"/>
+						<h:panelGrid columns="3" cellpadding="5">
+
+							<h:outputText for="changeUsername" value="Korisničko ime: " />
+							<p:inputText id="changeUsername" value="#{changePasswordBean.username}" required="true" label="Korisničko ime" />
+							<p:message for="changeUsername" display="icon"/>
+
+							<h:outputText for="changeOldPassword" value="Stara lozinka: " />
+							<p:password id="changeOldPassword" value="#{changePasswordBean.oldPassword}" required="true" label="Stara lozinka" />
+							<p:message for="changeOldPassword" display="icon"/>
+
+							<h:outputText for="changeNewPassword" value="Nova lozinka: " />
+							<p:password id="changeNewPassword" value="#{changePasswordBean.newPassword}" match="changeNewPasswordConfirm" required="true" label="Nova lozinka">
+								<f:validateLength minimum="3" />
+							</p:password>
+							<p:message for="changeNewPassword" display="icon"/>
+
+							<h:outputText for="changeNewPasswordConfirm" value="Potvrda nove lozinke: " />
+							<p:password id="changeNewPasswordConfirm" required="true" label="Potvrda nove lozinke" />
+							<p:message for="changeNewPasswordConfirm" display="icon"/>
+							
+							<p:commandButton id="btnChangePass" binding="#{changePasswordBean.btnChangePass}" update="changePassPanel" value="Promeni" action="#{changePasswordBean.changePassword}" />
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:tab>
+
+			<p:tab title="Novi korisnici - registracija">
+				<h:form>
+					<p:panel id="panel" >
+						<p:messages id="msgsRegister"/>
+						<h:panelGrid columns="3" cellpadding="5">					
+							<h:outputText for="name" value="Ime: " />
+							<p:inputText id="name" value="#{registerBean.user.name}" required="true" label="Ime" />
+							<p:message for="name" display="icon"/>
+
+							<h:outputText for="surname" value="Prezime: " />
+							<p:inputText id="surname" value="#{registerBean.user.surname}" required="true" label="Prezime" />
+							<p:message for="surname" display="icon"/>
+
+							<h:outputText for="username" value="Korisničko ime: " />
+							<p:inputText id="username" value="#{registerBean.user.username}" required="true" label="Korisničko ime" />
+							<p:message for="username" display="icon"/>
+
+
+							<h:outputText for="password" value="Lozinka: " />
+							<p:password id="password" value="#{registerBean.user.password}" match="rpassword" required="true" label="Lozinka">
+								<f:validateLength minimum="3" />
+							</p:password>
+							<p:message for="password" display="icon"/>
+
+							<h:outputText for="rpassword" value="Potvrda lozinke: " />
+							<p:password id="rpassword" value="#{registerBean.confirmPassword}" required="true" label="Potvrda lozinke" />
+							<p:message for="password" display="icon"/>
+
+
+							<h:outputText for="city" value="Grad: " />
+							<p:inputText id="city" value="#{registerBean.user.city}" required="false" label="Grad"/>
+							<p:message for="city" display="icon"/>
+
+							<h:outputText for="address" value="Adresa: " />
+							<p:inputText id="address" value="#{registerBean.user.address}" required="false" label="Adresa"/>
+							<p:message for="address" display="icon"/>
+
+							<h:outputText for="telephone" value="Telefon: " />
+							<p:inputText id="telephone" value="#{registerBean.user.telephone}" required="false" label="Telefon"/>
+							<p:message for="telephone" display="icon"/>
+
+							<h:outputText for="email" value="Email: " />
+							<p:inputText id="email" value="#{registerBean.user.email}" required="false" label=""/>
+							<p:message for="email" display="icon"/>
+
+							<p:commandButton id="btn" update="panel" value="Pošalji" action="#{registerBean.register}" />
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:tab>
+
+		</p:accordionPanel>
+    </ui:define>
+
+</ui:composition>

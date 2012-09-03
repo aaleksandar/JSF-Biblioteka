@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/layoutTemplate.xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{editBookBean.id}" required="true"
+					 requiredMessage="Greška! ID knjige je potreban argument." />
+	</f:metadata>
+
+    <ui:define name="title">
+        JSF Biblioteka | Detalji o knjizi
+    </ui:define>
+
+    <ui:define name="content">
+		<section id="book" style="width:860px;margin: 0 auto">
+
+			<h:form id="editBookForm" acceptcharset="UTF-8" enctype="multipart/form-data">
+				<p:fieldset legend="#{editBookBean.book.title}">
+
+					<div class="book-img-info">
+						<p:graphicImage width="280" value="/resources/covers/#{editBookBean.book.picture}" style="float:left" />
+
+						<h:panelGrid columns="3" cellpadding="5" width="530" styleClass="book-info">
+							<h:outputText value="Naslov: " />
+							<p:inputText id="editBookTitle" value="#{editBookBean.book.title}" required="true" label="Naslov" />
+							<p:message for="editBookTitle" display="icon"/>
+
+							<h:outputText value="Autor: " />
+							<p:inputText id="editBookAuthor" value="#{editBookBean.book.author}" required="true" label="Autor" />
+							<p:message for="editBookAuthor" display="icon"/>
+
+							<h:outputText value="Žanr: " />
+							<p:inputText id="editBookGenre" value="#{editBookBean.book.genre}" required="true" label="Žanr" />
+							<p:message for="editBookGenre" display="icon"/>
+
+							<h:outputText value="Izdanje: " />
+							<p:spinner id="editBookEdition" value="#{editBookBean.book.edition}" min="1" max="100" required="true" label="Izdanje" />
+							<p:message for="editBookEdition" display="icon"/>
+
+							<h:outputText value="Godina: " />
+							<p:spinner id="editBookYear" value="#{editBookBean.book.year}" max="2012" required="true" label="Godina" />
+							<p:message for="editBookYear" display="icon"/>
+
+							<h:outputText value="Izdavač: " />
+							<p:inputText id="editBookPublisher" value="#{editBookBean.book.publisher}" required="true" label="Izdavač" />
+							<p:message for="editBookPublisher" display="icon"/>
+
+							<h:outputText value="ISBN: " />
+							<p:inputText id="editBookISBN" value="#{editBookBean.book.isbn}" required="true" label="ISBN" />
+							<p:message for="editBookISBN" display="icon"/>
+
+							<h:outputText value="Opis: " />
+							<p:inputTextarea id="editBookDescription" rows="6" cols="33" value="#{editBookBean.book.description}" required="true" label="Opis" />
+							<p:message for="editBookDescription" display="icon"/>
+
+							<h:outputText value="Slika: " />
+							<p:fileUpload id="editBookPicture" value="#{editBookBean.coverBlob}" mode="simple" />
+							<p:message for="editBookPicture" display="icon"/>
+
+							<h:outputText value="Broj papirnih kopija: " />
+							<p:spinner id="editBookNumberOfCopies" value="#{editBookBean.book.numOfCopies}" min="0" required="true" label="Broj papirnih kopija" />
+							<p:message for="editBookNumberOfCopies" display="icon"/>
+
+							<h:outputText value="Knjiga se sme iznositi: " />
+							<p:selectBooleanCheckbox id="editBookTakeAway" value="#{editBookBean.book.takeAway}" />
+							<p:message for="editBookTakeAway" display="icon"/>
+
+							<h:outputText value="Elektronsko izdanje: " />
+							<p:fileUpload id="editBookPdf" value="#{editBookBean.pdfBlob}" mode="simple"/>
+							<p:message for="editBookPdf" display="icon"/>
+
+							<p:commandButton id="editBookBtn" ajax="false" update="editBookPanel" value="Izmeni knjigu" action="#{editBookBean.updateBook}" />
+						</h:panelGrid>
+					</div>
+
+				</p:fieldset>
+			</h:form>
+		</section>
+    </ui:define>
+
+</ui:composition>

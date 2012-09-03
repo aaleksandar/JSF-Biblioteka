@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/layoutTemplate.xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="title">
+        JSF Biblioteka | Admin panel
+    </ui:define>
+
+    <ui:define name="content">
+
+		<p:accordionPanel id="adminAccordionPanel">
+			<p:tab title="Neaktivirani korisnici">
+				<h:form id="unactiveForm">
+					<p:dataTable id="dataTable" var="user" value="#{adminBean.unactiveUsers}" rowKey="#{user.id}"
+								 emptyMessage="Nema korisnika koji nisu platili članarinu."
+								 paginator="true" rows="10"
+								 paginatorTemplate="{PreviousPageLink} {NextPageLink}">
+
+						<p:column headerText="Ime">
+							<h:outputText value="#{user.name}" />
+						</p:column>
+
+						<p:column headerText="Prezime">
+							<h:outputText value="#{user.surname}" />
+						</p:column>
+
+						<p:column headerText="Korisničko ime">
+							<h:outputText value="#{user.username}" />
+						</p:column>
+
+						<p:column headerText="Grad">
+							<h:outputText value="#{user.city}" />
+						</p:column>
+
+						<p:column headerText="Adresa">
+							<h:outputText value="#{user.address}" />
+						</p:column>
+
+						<p:column headerText="Telefon">
+							<h:outputText value="#{user.telephone}" />
+						</p:column>
+
+						<p:column headerText="Email">
+							<h:outputText value="#{user.email}" />
+						</p:column>
+
+						<p:column headerText="Aktiviraj" styleClass="text-center">
+							<p:commandButton actionListener="#{adminBean.activateUser(user)}" icon="ui-icon-check" update=":adminAccordionPanel:unactiveForm" />
+							<p:commandButton actionListener="#{adminBean.deleteUser(user)}" icon="ui-icon-closethick" update=":adminAccordionPanel:unactiveForm" />
+						</p:column>
+
+					</p:dataTable>
+
+				</h:form>
+			</p:tab>
+			<p:tab title="Dodaj novog bibliotekara">
+				<h:form id="newLibrarianForm">
+					<p:panel id="newLibrarianPanel" >
+						<p:messages id="msgsRegister"/>
+						<h:panelGrid columns="3" cellpadding="5">
+							<h:outputText value="Ime: " />
+							<p:inputText id="name" value="#{registerBean.user.name}" required="true" label="Ime" />
+							<p:message for="name" display="icon"/>
+
+							<h:outputText value="Prezime: " />
+							<p:inputText id="surname" value="#{registerBean.user.surname}" required="true" label="Prezime" />
+							<p:message for="surname" display="icon"/>
+
+							<h:outputText value="Korisničko ime: " />
+							<p:inputText id="username" value="#{registerBean.user.username}" required="true" label="Korisničko ime" />
+							<p:message for="username" display="icon"/>
+
+
+							<h:outputText value="Lozinka: " />
+							<p:password id="password" value="#{registerBean.user.password}" match="rpassword" required="true" label="Lozinka">
+								<f:validateLength minimum="3" />
+							</p:password>
+							<p:message for="password" display="icon"/>
+
+							<h:outputText value="Potvrda lozinke: " />
+							<p:password id="rpassword" value="#{registerBean.confirmPassword}" required="true" label="Potvrda lozinke" />
+							<p:message for="password" display="icon"/>
+
+
+							<h:outputText value="Grad: " />
+							<p:inputText id="city" value="#{registerBean.user.city}" required="false" label="Grad"/>
+							<p:message for="city" display="icon"/>
+
+							<h:outputText value="Adresa: " />
+							<p:inputText id="address" value="#{registerBean.user.address}" required="false" label="Adresa"/>
+							<p:message for="address" display="icon"/>
+
+							<h:outputText value="Telefon: " />
+							<p:inputText id="telephone" value="#{registerBean.user.telephone}" required="false" label="Telefon"/>
+							<p:message for="telephone" display="icon"/>
+
+							<h:outputText value="Email: " />
+							<p:inputText id="email" value="#{registerBean.user.email}" required="false" label=""/>
+							<p:message for="email" display="icon"/>
+
+							<p:commandButton id="btn" update="newLibrarianPanel" value="Pošalji" action="#{registerBean.registerLibrarian}" />
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:tab>
+			<p:tab title="Obriši bibliotekara">
+				<h:form id="librariansForm">
+					<p:dataTable id="librariansDataTable" var="user" value="#{adminBean.librarians}" rowKey="#{librarian.id}"
+								 emptyMessage="Nema bibliotekara u sistemu.">
+
+						<p:column headerText="Ime">
+							<h:outputText value="#{user.name}" />
+						</p:column>
+
+						<p:column headerText="Prezime">
+							<h:outputText value="#{user.surname}" />
+						</p:column>
+
+						<p:column headerText="Korisničko ime">
+							<h:outputText value="#{user.username}" />
+						</p:column>
+
+						<p:column headerText="Grad">
+							<h:outputText value="#{user.city}" />
+						</p:column>
+
+						<p:column headerText="Adresa">
+							<h:outputText value="#{user.address}" />
+						</p:column>
+
+						<p:column headerText="Telefon">
+							<h:outputText value="#{user.telephone}" />
+						</p:column>
+
+						<p:column headerText="Email">
+							<h:outputText value="#{user.email}" />
+						</p:column>
+
+						<p:column headerText="Obriši" styleClass="text-center">
+							<p:commandButton id="btnDeleteLibrarian" actionListener="#{adminBean.deleteUser(user)}" icon="ui-icon-close" update=":adminAccordionPanel:librariansForm" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Promeni sistemske parametre">
+				<h:form id="constUpdateForm">
+					<p:panel id="systemPanel" >
+						<p:messages id="msgsSystem" autoUpdate="true"/>
+						<h:panelGrid columns="3" cellpadding="5">
+
+							<h:outputText  value="Maksimum iznajmljenih knjiga: " />
+							<p:spinner id="numBooksAllowedToTake" value="#{adminBean.numBooksAllowedToTake}" required="true" label="Maksimum iznajmljenih knjiga" min="1" />
+							<p:message for="numBooksAllowedToTake" display="icon"/>
+
+							<h:outputText  value="Maksimum rezervisanih knjiga: " />
+							<p:spinner id="numBooksAllowedToReserve" value="#{adminBean.numBooksAllowedToReserve}" required="true" label="Maksimum rezervisanih knjiga" min="1" />
+							<p:message for="numBooksAllowedToReserve" display="icon"/>
+
+							<h:outputText  value="Dozvoljen broj dana držanja knjige: " />
+							<p:spinner id="numDaysAllowedToHold" value="#{adminBean.numDaysAllowedToHold}" required="true" label="Dozvoljen broj dana držanja knjige" min="1" />
+							<p:message for="numDaysAllowedToHold" display="icon"/>
+
+							<h:outputText  value="Kazna u din po danu kašnjenja: " />
+							<p:spinner id="penaltyPerDay" value="#{adminBean.penaltyPerDay}" required="true" label="Kazna u din po danu kašnjenja" min="1" />
+							<p:message for="penaltyPerDay" display="icon"/>
+
+							<p:commandButton update="systemPanel" value="Promeni" actionListener="#{adminBean.updateSystemParameters}" />
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:tab>
+		</p:accordionPanel>
+    </ui:define>
+
+</ui:composition>

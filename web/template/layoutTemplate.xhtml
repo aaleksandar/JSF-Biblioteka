@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:outputStylesheet name="css/default.css" />
+		<h:outputStylesheet name="css/cssLayout.css" />
+        <title><ui:insert name="title">JSF Biblioteka</ui:insert></title>
+    </h:head>
+
+    <h:body>
+
+		<header>
+			<h1>
+				<ui:insert name="title">
+				</ui:insert>
+			</h1>
+		</header>
+
+		<nav>
+			<h:form id="navMenuForm">
+			<ul>
+				<li><p:button value="Početna" outcome="/index.xhtml" rendered="false"></p:button></li>
+				<li><p:button value="Pretraga" outcome="/search.xhtml"></p:button></li>
+
+				<li><p:button value="Admin panel" outcome="/admin.xhtml" rendered="#{sessionBean.admin}"></p:button></li>
+				<li><p:button value="Kontrola biblioteke" outcome="/librarian.xhtml" rendered="#{sessionBean.librarian}"></p:button></li>
+				<li><p:button value="Korisnički panel" outcome="/member.xhtml" rendered="#{sessionBean.loggedIn and !sessionBean.librarian}"></p:button></li>
+				<li><p:button value="Top liste" outcome="/top_lists.xhtml" rendered="#{sessionBean.loggedIn}"></p:button></li>
+
+				<li><p:button value="Prijava" outcome="/login.xhtml" rendered="#{!sessionBean.loggedIn}"></p:button></li>
+				<li><p:commandButton value="Odjava" action="#{sessionBean.logout}" rendered="#{sessionBean.loggedIn}"></p:commandButton></li>
+			</ul>
+			</h:form>
+		</nav>
+
+        <div id="content">
+            <ui:insert name="content">--</ui:insert>
+        </div>
+
+        <footer>
+			<h:outputText value="#{sessionBean.user.name} #{sessionBean.user.surname}" />
+        </footer>
+
+    </h:body>
+
+</html>

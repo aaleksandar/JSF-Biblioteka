@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/layoutTemplate.xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{bookBean.id}" required="true"
+					 requiredMessage="Greška! ID knjige je potreban argument." />
+		<f:event type="preRenderView" listener="#{bookBean.init}" />
+	</f:metadata>
+
+    <ui:define name="title">
+        JSF Biblioteka | Detalji o knjizi
+    </ui:define>
+
+    <ui:define name="content">
+		<section id="book" style="width:860px;margin: 0 auto">
+
+			<form id="bookForm">
+				<p:fieldset legend="#{bookBean.book.title}">
+
+					<div class="book-img-info">
+						<p:graphicImage width="280" rendered="#{bookBean.book.picture}"
+										value="/resources/covers/#{bookBean.book.picture}"
+										style="float:left; margin-bottom: 30px;" />
+
+						<h:panelGrid columns="2" cellpadding="6" styleClass="book-info">
+							<h:outputText value="Naslov:" />
+							<h:outputText value="#{bookBean.book.title}" />
+
+							<h:outputText value="Autor:" />
+							<h:outputText value="#{bookBean.book.author}" />
+
+							<h:outputText value="Žanr:" />
+							<h:outputText value="#{bookBean.book.genre}" />
+
+							<h:outputText value="Izdanje:" />
+							<h:outputText value="#{bookBean.book.edition}" />
+
+							<h:outputText value="Godina:" />
+							<h:outputText value="#{bookBean.book.year}" />
+
+							<h:outputText value="Izdavač:" />
+							<h:outputText value="#{bookBean.book.publisher}" />
+
+							<h:outputText value="ISBN:" />
+							<h:outputText value="#{bookBean.book.isbn}" />
+
+							<h:outputText value="Opis:" />
+							<h:outputText value="#{bookBean.book.description}" />
+
+							<h:outputText value="Izmeni:" rendered="#{sessionBean.librarian}" />
+							<p:button outcome="edit_book.xhtml?id=#{bookBean.book.id}" rendered="#{sessionBean.librarian}" icon="ui-icon-pencil" value="Napravi izmene" />
+
+							<h:outputText value="Rezervacija:" rendered="#{bookBean.book.paperVersion and !sessionBean.librarian}" />
+							<p:commandButton
+								id="reserveButton"
+								rendered="#{bookBean.book.paperVersion and !sessionBean.librarian}"
+								value="#{bookBean.reserveButtonValue}"
+								disabled="#{bookBean.reservationButtonDisabled}"
+								action="#{bookBean.toggleReservation}"
+								/>
+
+							<h:outputText value="PDF:" rendered="#{bookBean.pdfAvailable}" />
+							<h:panelGrid rendered="#{bookBean.pdfAvailable}">
+								<a href="#{request.contextPath}/resources/pdfs/#{bookBean.book.pdf}">Preuzmi elektronsko izdanje</a>
+							</h:panelGrid>
+						</h:panelGrid>
+					</div>
+
+					<!-- Librarian only | Give book -->
+					<h:form id="giveBookForm" rendered="#{bookBean.book.paperVersion and bookBean.book.takeAway and sessionBean.librarian}">
+						<p:fieldset legend="Iznajmi knjigu" styleClass="panel">
+							<h:panelGrid columns="2" cellpadding="6">
+								<h:outputText value="Stanje:" />
+								<h:outputText value="Ukupno knjiga: #{bookBean.book.numOfCopies},
+											  iznajmljenih: #{bookBean.numOfTaken(bookBean.book)},
+											  rezervisanih: #{bookBean.numOfReserved(bookBean.book)}" />
+
+								<h:outputText value="Korisnik" />
+								<p:dataTable id="takeDataTable" var="user" value="#{adminBean.members}" rowKey="#{user.id}"
+											 widgetVar="takeTable" emptyMessage="Nema korisnika."
+											 paginator="true" rows="5"
+											 paginatorTemplate="{PreviousPageLink} {NextPageLink}">
+
+									<p:column id="usernameColumn" filterBy="#{user.username}"
+											  headerText="Korisničko ime" filterMatchMode="contains">
+										<h:outputText value="#{user.username}" />
+									</p:column>
+
+									<p:column id="authorColumn" filterBy="#{user.name}"
+											  headerText="Ime" filterMatchMode="contains">
+										<h:outputText value="#{user.name}" />
+									</p:column>
+
+									<p:column id="genreColumn" filterBy="#{user.surname}"
+											  headerText="Prezime" filterMatchMode="contains">
+										<h:outputText value="#{user.surname}" />
+									</p:column>
+
+									<p:column headerText="Trenutno drži">
+										<h:outputText value="#{takenBean.numOfBooksTaken(user)} / #{takenBean.numOfBooksAllowedToTake(user)}" />
+									</p:column>
+
+									<p:column headerText="Izdaj">
+										<p:commandButton action="#{takenBean.giveBook(user,bookBean.book)}" icon="ui-icon-circle-triangle-e" title="View" rendered="#{takenBean.canTakeBook(user,bookBean.book)}" />
+									</p:column>
+
+								</p:dataTable>
+							</h:panelGrid>
+						</p:fieldset>
+					</h:form>
+
+					<p:fieldset legend="Komentari" styleClass="panel">
+						<h:dataTable value="#{bookBean.comments}" var="comment" width="100%">
+							<h:column>
+								<f:facet name="header">Ocena</f:facet>
+								#{comment.grade}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Komentar</f:facet>
+								#{comment.comment}
+							</h:column>
+
+							<f:facet name="footer">
+								<p:panel id="commentPanel" rendered="#{bookBean.canPostComment(sessionBean.user)}" style="margin-top: 20px">
+									<p:messages id="msgsComment"/>
+
+									<table>
+										<tr>
+											<td width="200"><h:outputText value="Dodaj ocenu: " style="width: 300px;" /></td>
+											<td width="400"><p:spinner value="#{bookBean.newGrade}" required="true" label="Ocena" min="1" max="10" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText value="Dodaj komentar: " /></td>
+											<td><p:inputTextarea rows="5" cols="50" value="#{bookBean.newComment}" required="false" label="Komentar"  /></td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<p:commandButton action="#{bookBean.postComment}" update="commentPanel" value="Pošalji komentar" />
+											</td>
+										</tr>
+									</table>
+								</p:panel>
+							</f:facet>
+						</h:dataTable>
+					</p:fieldset>
+
+				</p:fieldset>
+
+			</form>
+		</section>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,244 @@
+DROP TABLE IF EXISTS system_activated;
+DROP TABLE IF EXISTS comment;
+DROP TABLE IF EXISTS reservation;
+DROP TABLE IF EXISTS taken;
+DROP TABLE IF EXISTS monthly_award;
+DROP TABLE IF EXISTS yearly_award;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS book;
+DROP TABLE IF EXISTS const;
+
+CREATE TABLE user (
+	id INT NOT NULL AUTO_INCREMENT,
+
+	name varchar(30) NOT NULL,
+	surname varchar(30) NOT NULL,
+
+	username varchar(30) NOT NULL,
+	password varchar(30) NOT NULL,
+
+	city varchar(30),
+	address varchar(30),
+	telephone varchar(30),
+	email varchar(30),
+
+	type varchar(10) NOT NULL,
+	active boolean DEFAULT 0,
+
+	timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+	PRIMARY KEY (id)
+);
+
+INSERT INTO user
+		(name, surname, username, password, type, active)
+		VALUES
+		('Aleksandar', 'Abu-Samra', 'admin', 'admin', 'admin', true);
+
+INSERT INTO user
+		(name, surname, username, password, type, active)
+		VALUES
+		('Ivan', 'Gavrilović', 'gavra0', 'gavra0', 'librarian', true);
+
+INSERT INTO user
+		(name, surname, username, password, type, active)
+		VALUES
+		('Nemanja', 'Cerovac', 'sergio', 'sergio', 'librarian', true);
+
+INSERT INTO user
+		(name, surname, username, password, type, active, timestamp)
+		VALUES
+		('Marko', 'Stojanović', 'marko', 'marko', 'member', true, '2011-08-28 21:57:44');
+
+INSERT INTO user
+		(name, surname, username, password, type, active, timestamp)
+		VALUES
+		('Vukan', 'Simić', 'vukan', 'vukan', 'member', false, '2011-04-20 00:51:43');
+
+INSERT INTO user
+		(name, surname, username, password, type, active, timestamp)
+		VALUES
+		('Miroslav', 'Milivojević', 'jaza', 'jaza', 'member', false, '2012-01-10 10:10:44');
+
+
+
+CREATE TABLE book (
+	id INT NOT NULL AUTO_INCREMENT,
+
+	title varchar(100) NOT NULL,
+	author varchar(100) NOT NULL,
+	genre varchar(100) NOT NULL,
+
+	edition int(2) NOT NULL,
+	year int(4) NOT NULL,
+	publisher varchar(100) NOT NULL,
+	isbn varchar(20) NOT NULL,
+	description text NOT NULL,
+	picture varchar(100),
+
+	take_away boolean DEFAULT 1,
+	paper_version boolean DEFAULT 1,
+	pdf varchar(100) DEFAULT NULL,
+
+	num_of_copies int NOT NULL,
+
+	PRIMARY KEY (id)
+);
+
+INSERT INTO book
+		(title, author, genre, edition, year, publisher, isbn, description, num_of_copies, picture)
+		VALUES
+		('20.000 milja pod morem', 'Žil Vern' ,'Roman, naučna fantastika', 3, 2011, 'Beograd: JRJ, 2011 (Loznica: Mladost grup)', '978-86-7609-533-9', 'Dvadeset hiljada milja pod morem (fr. Vingt mille lieues sous les mers) je roman francuskog pisca Žil Verna. Roman je posvećen istraživanju morskih dubina sa novim pronalaskom 19. vijeka - podmornicom, nazvanom Nautilus, kojom upravlja kapetan Nemo. Ova uzbudljiva vizionarska priča je puna dramatičnih događaja, strasti, i opisa ljepote podvodnog svijeta. Glavni likovi romana su profesor Pjer Aronaks, kapetan Nemo, sluga Konsej, mornar Ned Land, i kapetan Faragat.', 3, 'Zil-Vern-Dvadeset-hiljada-milja-pod-morem.jpg');
+
+INSERT INTO book
+		(title, author, genre, edition, year, publisher, isbn, description, num_of_copies, picture)
+		VALUES
+		('Hari Poter i vatreni pehar', 'Džoan K. Rouling', 'naučnofantastična proza', 1, 2002, 'Beograd: Narodna knjiga: Alfa, 2002', '86-331-0367-2', 'Hari Poter i Vatreni pehar (engl. Harry Potter and the Goblet of Fire) je četvrti deo u seriji knjiga o Hariju Poteru, spisateljice Dž. K. Rouling, premijerno izdata 8. jula 2000. Knjiga je privukla dodatnu pažnju zbog najave Roulingove da će jedan od junaka iz knjige biti ubijen. Roman je osvojio nagradu Hjugo 2001, a film koji je snimljen po njoj imao je svetsku premijeru 18. novembra 2005.', 5, 'HP4-SRB-knjiga.jpg');
+
+INSERT INTO book
+		(title, author, genre, edition, year, publisher, isbn, description, num_of_copies, picture)
+		VALUES
+		('Ples sa zmajevima. Deo 1, Snovi i prah', 'Džordž Martin', 'roman', 1, 2012, 'Beograd: Laguna', '978-86-521-0913-5', 'Budućnost Sedam kraljevstava visi o koncu. Na istoku Deneris, poslednji izdanak kuće Targarjena, čiji su zmajevi sada već izrasli u strašne zveri, vlada kao kraljica grada podignutog na prahu i smrti, opkoljena neprijateljima.', 1, 'ples_sa_zmajevima_-_deo_prvi_snovi_i_prah_v.jpg');
+
+INSERT INTO book
+		(title, author, genre, edition, year, publisher, isbn, description, num_of_copies, picture, take_away)
+		VALUES
+		('Enciklopedija dinosaurusa', 'Bojana Aleksić; Lidija Di Bazi; Slobodan Novaković', 'enciklopedija', 1, 2010, 'Novi Sad: Trio; Ruma: Panonija', '978-86-84535-11-7', 'Enciklopedija dinosaurusa: [sa značenjem njihovih imena] / prevela s italijanskog Bojana Aleksić; [ilustrovao Lidia di Basi; urednik Slobodan Novaković]', 1, 'enciklopedija-dinosaurusa.jpg', 0);
+
+INSERT INTO book
+		(title, author, genre, edition, year, publisher, isbn, description, num_of_copies, picture)
+		VALUES
+		('Linear Models for Optimal Test Design', 'Wim J. Linden', 'Psihometrija, linerni modeli', 1, 2005, 'New York: Springer', '978-0387-20272-3', 'Wim van der Linden was just given a lifetime achievement award by the National Council on Measurement in Education. There is no one more prominent in the area of educational testing. There are hundreds of computer-based credentialing exams in areas such as accounting, real estate, nursing, and securities, as well as the well-known admissions exams for college, graduate school, medical school, and law school - there is great need on the theory of testing.', 2, 'linear-models-for-optimal-test-design.jpg');
+
+INSERT INTO book
+		(title, author, genre, edition, year, publisher, isbn, description, num_of_copies, picture, paper_version, pdf)
+		VALUES
+		('Frankenstein or, the Modern Prometheus', 'Mary Shelley', '(naučno)fantastična proza', 1, 2007, 'Beograd: Liber Novus', '978-86-517-0041-8', 'Frankenštajn ili punim imenom Frankenštajn ili moderni Prometej (Frankenstein, or The Modern Prometeus), 1818, je roman engleske književnice Mary Shelley. Smatra ga se jednim od glavnih prethodnika moderne znanstvene fantastike.', 1, '1831frankenstein.jpg', 0, 'Frankenstein_NT.pdf');
+
+INSERT INTO book
+		(title, author, genre, edition, year, publisher, isbn, description, num_of_copies, picture, paper_version, pdf)
+		VALUES
+		('Pride and Prejudice', 'Jane Austen', 'roman', 1, 1994, 'London: Penguin Books', '978-0-14062-321-5', 'Pride and Prejudice is a novel by Jane Austen, first published in 1813. The story follows the main character Elizabeth Bennet as she deals with issues of manners, upbringing, morality, education, and marriage in the society of the landed gentry of early 19th-century England. Elizabeth is the second of five daughters of a country gentleman living near the fictional town of Meryton in Hertfordshire, near London.', 8, 'pride-and-prejudice.jpg', 1, 'Pride_and_Prejudice_NT.pdf');
+
+
+CREATE TABLE comment (
+	id INT NOT NULL AUTO_INCREMENT,
+
+	book_id INT NOT NULL,
+	comment text,
+	grade int(2),
+
+	FOREIGN KEY (book_id) REFERENCES book (id) ON UPDATE CASCADE on DELETE CASCADE,
+
+	PRIMARY KEY (id)
+);
+
+INSERT INTO comment
+		(book_id, comment, grade)
+		VALUES
+		(1, 'Odličan roman, pravi klasik!', 10);
+
+INSERT INTO comment
+		(book_id, comment, grade)
+		VALUES
+		(1, 'Žil Vern u svom punom sjaju.', 8);
+
+
+
+CREATE TABLE reservation (
+	id INT NOT NULL AUTO_INCREMENT,
+	user_id INT NOT NULL,
+	book_id INT NOT NULL,
+
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+	FOREIGN KEY (user_id) REFERENCES user (id) ON UPDATE CASCADE on DELETE CASCADE,
+	FOREIGN KEY (book_id) REFERENCES book (id) ON UPDATE CASCADE on DELETE CASCADE,
+
+	PRIMARY KEY (id)
+);
+
+INSERT INTO reservation
+		(user_id, book_id, timestamp)
+		VALUES
+		(4, 2, '2012-08-28 21:57:44');
+
+INSERT INTO reservation
+		(user_id, book_id, timestamp)
+		VALUES
+		(5, 2, '2012-09-02 00:00:10');
+
+
+CREATE TABLE taken (
+	id INT NOT NULL AUTO_INCREMENT,
+
+	user_id INT NOT NULL,
+	book_id INT NOT NULL,
+
+	timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	back boolean DEFAULT 0,
+	had_penalty boolean DEFAULT 0,
+
+	FOREIGN KEY (user_id) REFERENCES user (id) ON UPDATE CASCADE on DELETE CASCADE,
+	FOREIGN KEY (book_id) REFERENCES book (id) ON UPDATE CASCADE on DELETE CASCADE,
+
+	PRIMARY KEY (id)
+);
+
+INSERT INTO taken
+		(user_id, book_id, timestamp)
+		VALUES
+		(4, 5, '2012-08-01 20:07:03');
+
+
+CREATE TABLE monthly_award (
+	id INT NOT NULL AUTO_INCREMENT,
+
+	user_id INT NOT NULL,
+	year int(4) NOT NULL,
+	month int(2) NOT NULL,
+
+	FOREIGN KEY (user_id) REFERENCES user (id) ON UPDATE CASCADE on DELETE CASCADE,
+
+	PRIMARY KEY (id)
+);
+
+
+CREATE TABLE yearly_award (
+	id INT NOT NULL AUTO_INCREMENT,
+
+	user_id INT NOT NULL,
+	year int(4) NOT NULL,
+
+	FOREIGN KEY (user_id) REFERENCES user (id) ON UPDATE CASCADE on DELETE CASCADE,
+
+	PRIMARY KEY (id)
+);
+
+
+CREATE TABLE const (
+	id INT NOT NULL AUTO_INCREMENT,
+
+	m INT NOT NULL,
+	n INT NOT NULL,
+	s INT NOT NULL,
+	p INT NOT NULL,
+
+	PRIMARY KEY (id)
+);
+
+INSERT INTO const
+		(m, n, s, p)
+		VALUES
+		(2, 2, 15, 30);
+
+
+CREATE TABLE system_activated (
+	id INT NOT NULL AUTO_INCREMENT,
+
+	year int(4) NOT NULL,
+	activated boolean DEFAULT 1,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+	PRIMARY KEY (id)
+);

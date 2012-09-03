@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/layoutTemplate.xhtml"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:define name="title">
+        JSF Biblioteka | Top liste
+    </ui:define>
+
+    <ui:define name="content">
+        <p:accordionPanel id="center-div">
+			<p:tab title="Najnovije knjige">
+				<h:form id="newestBooksForm">
+					<p:dataTable var="book" value="#{searchBean.newestBooks}" emptyMessage="Nema novih knjiga">
+						<p:column headerText="Naslov">
+							<h:outputText value="#{book.title}" />
+						</p:column>
+
+						<p:column headerText="Autor">
+							<h:outputText value="#{book.author}" />
+						</p:column>
+
+						<p:column headerText="Žanr">
+							<h:outputText value="#{book.genre}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Najčitanije knjiga prethodnog meseca">
+				<h:form id="mostReadBooksForm">
+					<p:dataTable var="book" value="#{searchBean.mostReadBooks}" emptyMessage="Nema pročitanih knjiga">
+						<p:column headerText="Naslov">
+							<h:outputText value="#{book.title}" />
+						</p:column>
+
+						<p:column headerText="Autor">
+							<h:outputText value="#{book.author}" />
+						</p:column>
+
+						<p:column headerText="Žanr">
+							<h:outputText value="#{book.genre}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Najbolje ocenjene knjige" rendered="#{sessionBean.librarian}">
+				<h:form id="highestRatedBooksForm">
+					<p:dataTable var="book" value="#{searchBean.highestRatedBooksForm}" emptyMessage="Nema ocenjenih knjiga">
+						<p:column headerText="Naslov">
+							<h:outputText value="#{book.title}" />
+						</p:column>
+
+						<p:column headerText="Autor">
+							<h:outputText value="#{book.author}" />
+						</p:column>
+
+						<p:column headerText="Žanr">
+							<h:outputText value="#{book.genre}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Najtraženije knjige" rendered="#{sessionBean.librarian}">
+				<h:form id="mostPopularBooksForm">
+					<p:dataTable var="book" value="#{searchBean.popularBooks}" emptyMessage="Nema traženih knjiga">
+						<p:column headerText="Naslov">
+							<h:outputText value="#{book.title}" />
+						</p:column>
+
+						<p:column headerText="Autor">
+							<h:outputText value="#{book.author}" />
+						</p:column>
+
+						<p:column headerText="Žanr">
+							<h:outputText value="#{book.genre}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Najbolji čitaoci u prethodnih mesec dana" rendered="#{sessionBean.librarian}">
+				<h:form id="bestReadersMonthForm">
+					<p:dataTable var="user" value="#{searchBean.bestMembersThisMonth}" emptyMessage="Nema čitalaca">
+						<p:column headerText="Korisničko ime">
+							<h:outputText value="#{user.username}" />
+						</p:column>
+
+						<p:column headerText="Ime">
+							<h:outputText value="#{user.name}" />
+						</p:column>
+
+						<p:column headerText="Prezime">
+							<h:outputText value="#{user.surname}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Najbolji čitaoci u prethodnih godinu dana" rendered="#{sessionBean.librarian}">
+				<h:form id="bestReadersYearForm">
+					<p:dataTable var="user" value="#{searchBean.bestMembersThisYear}" emptyMessage="Nema čitalaca">
+						<p:column headerText="Korisničko ime">
+							<h:outputText value="#{user.username}" />
+						</p:column>
+
+						<p:column headerText="Ime">
+							<h:outputText value="#{user.name}" />
+						</p:column>
+
+						<p:column headerText="Prezime">
+							<h:outputText value="#{user.surname}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+		</p:accordionPanel>
+    </ui:define>
+
+</ui:composition>

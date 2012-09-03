@@ -1,0 +1,7 @@
+Korišćene biblioteke:
+
+PrimeFaces 3.3.1 - http://www.primefaces.org/
+MySQL Connector/J - http://dev.mysql.com/downloads/connector/j/
+Hibernate - http://hibernate.org/
+Commons IO 2.4 - http://commons.apache.org/io/
+Commons FileUpload 1.2.2  - http://commons.apache.org/fileupload/

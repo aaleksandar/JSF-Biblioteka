@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+                template="./template/layoutTemplate.xhtml"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="title">JSF Biblioteka | Pretraga</ui:define>
+
+
+    <ui:define name="content">
+		<h:form>
+
+			<p:dataTable id="dataTable" var="book" value="#{searchBean.books}" rowKey="#{book.id}"
+						 widgetVar="booksTable" emptyMessage="Nema knjiga sa zadatim kriterijumima">
+
+				<p:column id="titleColumn" filterBy="#{book.title}"
+						  headerText="Naslov" filterMatchMode="contains">
+					<h:outputText value="#{book.title}" />
+				</p:column>
+
+				<p:column id="authorColumn" filterBy="#{book.author}"
+						  headerText="Autor" filterMatchMode="contains">
+					<h:outputText value="#{book.author}" />
+				</p:column>
+
+				<p:column id="genreColumn" filterBy="#{book.genre}"
+						headerText="Žanr" filterMatchMode="contains">
+					<h:outputText value="#{book.genre}" />
+				</p:column>
+
+
+				<p:column style="width:40px" rendered="#{sessionBean.loggedIn}">
+					<p:button outcome="book.xhtml?id=#{book.id}" icon="ui-icon-circle-triangle-e" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+    </ui:define>
+
+</ui:composition>

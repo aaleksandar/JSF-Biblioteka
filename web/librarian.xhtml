@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/layoutTemplate.xhtml"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="title">
+		JSF Biblioteka | Kontrola biblioteke
+    </ui:define>
+
+    <ui:define name="content">
+		<p:accordionPanel id="librarianAccordPanel">
+			<p:tab title="Aktivacija sistema za tekuću godinu!" rendered="#{!librarianBean.systemActivated}">
+				<h:form id="newYear" style="text-align: center;">
+					<p:commandButton value="Nagradi 5 najboljih čitalaca u prethodnoj godini"
+									 action="#{systemBean.giveYearlyAwards}"
+									 rendered="#{systemBean.yearlyAwardsAllowed()}"/>
+
+					<p:commandButton value="AKTIVIRAJ SISTEM"
+									 action="#{librarianBean.newYearActivation}"/>
+				</h:form>
+			</p:tab>
+			<p:tab title="Vrati knjigu u biblioteku">
+				<h:form id="takenForm">
+
+					<p:dataTable id="takenDataTable" var="taken" value="#{takenBean.takenList}" rowKey="#{taken}"
+								 widgetVar="takenTable" emptyMessage="Nema uzetih knjiga."
+								 paginator="true" rows="10"
+								 paginatorTemplate="{PreviousPageLink} {NextPageLink}">
+
+						<p:column id="titleColumn" filterBy="#{taken.user.username}"
+								  headerText="Korisničko ime" filterMatchMode="contains">
+							<h:outputText value="#{taken.user.username}" />
+						</p:column>
+
+						<p:column id="authorColumn" filterBy="#{taken.book.title}"
+								  headerText="Naslov knjige" filterMatchMode="contains">
+							<h:outputText value="#{taken.book.title}" />
+						</p:column>
+
+						<p:column id="genreColumn" filterBy="#{taken.book.isbn}"
+								  headerText="ISBN" filterMatchMode="contains">
+							<h:outputText value="#{taken.book.isbn}" />
+						</p:column>
+
+						<p:column headerText="Kazna">
+							<h:outputText value="#{takenBean.penalty(taken)} din" />
+						</p:column>
+
+						<p:column headerText="Vrati" styleClass="text-center">
+							<p:commandButton actionListener="#{takenBean.returnBook(taken)}"
+											 icon="ui-icon-circle-triangle-e"
+											 update=":librarianAccordPanel:takenForm" />
+					   </p:column>
+
+					</p:dataTable>
+
+				</h:form>
+			</p:tab>
+			<p:tab title="Dodaj novu knjigu">
+				<h:form id="newBookForm" enctype="multipart/form-data" acceptcharset="UTF-8">
+					<p:panel id="addBookPanel" >
+						<p:messages id="addBookMsgs"/>
+						<h:panelGrid columns="3" cellpadding="5">
+							<h:outputText  value="Naslov: " />
+							<p:inputText id="addBookTitle" value="#{librarianBean.newBook.title}" required="true" label="Naslov" />
+							<p:message for="addBookTitle" display="icon"/>
+
+							<h:outputText value="Autor: " />
+							<p:inputText id="addBookAuthor" value="#{librarianBean.newBook.author}" required="true" label="Autor" />
+							<p:message for="addBookAuthor" display="icon"/>
+
+							<h:outputText value="Žanr: " />
+							<p:inputText id="addBookGenre" value="#{librarianBean.newBook.genre}" required="true" label="Žanr" />
+							<p:message for="addBookGenre" display="icon"/>
+
+							<h:outputText value="Izdanje: " />
+							<p:spinner id="addBookEdition" value="#{librarianBean.newBook.edition}" min="1" max="100" required="true" label="Izdanje" />
+							<p:message for="addBookEdition" display="icon"/>
+
+							<h:outputText value="Godina: " />
+							<p:spinner id="addBookYear" value="#{librarianBean.newBook.year}" max="2012" required="true" label="Godina" />
+							<p:message for="addBookYear" display="icon"/>
+
+							<h:outputText value="Izdavač: " />
+							<p:inputText id="addBookPublisher" value="#{librarianBean.newBook.publisher}" required="true" label="Izdavač" />
+							<p:message for="addBookPublisher" display="icon"/>
+
+							<h:outputText value="ISBN: " />
+							<p:inputText id="addBookISBN" value="#{librarianBean.newBook.isbn}" required="true" label="ISBN" />
+							<p:message for="addBookISBN" display="icon"/>
+
+							<h:outputText value="Opis: " />
+							<p:inputTextarea id="addBookDescription" rows="6" cols="33" value="#{librarianBean.newBook.description}" required="true" label="Opis" />
+							<p:message for="addBookDescription" display="icon"/>
+
+							<h:outputText value="Slika: " />
+							<p:fileUpload id="addBookPicture" value="#{librarianBean.coverBlob}" mode="simple" />
+
+							<p:message for="addBookPicture" display="icon"/>
+
+							<h:outputText value="Broj papirnih kopija: " />
+							<p:spinner id="addBookNumberOfCopies" value="#{librarianBean.newBook.numOfCopies}" min="0" required="true" label="Broj papirnih kopija" />
+							<p:message for="addBookNumberOfCopies" display="icon"/>
+
+							<h:outputText value="Knjiga se sme iznositi: " />
+							<p:selectBooleanCheckbox id="addBookTakeAway" value="#{librarianBean.newBook.takeAway}" />
+							<p:message for="addBookTakeAway" display="icon"/>
+
+							<h:outputText value="Elektronsko izdanje: " />
+							<p:fileUpload id="addBookPdf" value="#{librarianBean.pdfBlob}" mode="simple"/>
+							<p:message for="addBookPdf" display="icon"/>
+
+							<p:commandButton id="addBookBtn" ajax="false" update="addBookPanel" value="Dodaj knjigu" action="#{librarianBean.addBook}" />
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:tab>
+			<p:tab title="Produži članarinu korisniku">
+				<h:form id="unactiveForm">
+					<p:dataTable id="dataTable" var="user" value="#{adminBean.unactiveUsers}" rowKey="#{user.id}"
+								 emptyMessage="Svi korisnici su platili članarinu.">
+
+						<p:column headerText="Ime">
+							<h:outputText value="#{user.name}" />
+						</p:column>
+
+						<p:column headerText="Prezime">
+							<h:outputText value="#{user.surname}" />
+						</p:column>
+
+						<p:column headerText="Korisničko ime">
+							<h:outputText value="#{user.username}" />
+						</p:column>
+
+						<p:column headerText="Platio?" styleClass="text-center">
+							<p:commandButton actionListener="#{adminBean.activateUser(user)}" icon="ui-icon-check" update=":librarianAccordPanel:unactiveForm" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+		</p:accordionPanel>
+    </ui:define>
+
+
+</ui:composition>
